@@ -1,0 +1,25 @@
+server:
+  servlet:
+    encoding:
+      enabled: true
+      force: true
+      charset: UTF-8
+      force-request: true
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  application:
+    name: @project.artifactId@
+  output:
+    ansi:
+      enabled: always
+  profiles:
+    active: @profileActive@
+  aop:
+    proxy-target-class: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: always
+logging:
+  config: classpath:log4j2-@profileActive@.xml

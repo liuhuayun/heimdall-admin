@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /*
+  ~  *
+  ~  *  *    Copyright 2020-2021 Luter.me
+  ~  *  *
+  ~  *  *    Licensed under the Apache License, Version 2.0 (the "License");
+  ~  *  *    you may not use this file except in compliance with the License.
+  ~  *  *    You may obtain a copy of the License at
+  ~  *  *
+  ~  *  *      http://www.apache.org/licenses/LICENSE-2.0
+  ~  *  *
+  ~  *  *    Unless required by applicable law or agreed to in writing, software
+  ~  *  *    distributed under the License is distributed on an "AS IS" BASIS,
+  ~  *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  *  *    See the License for the specific language governing permissions and
+  ~  *  *    limitations under the License.
+  ~  *
+  ~  */
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.luterc</groupId>
+    <artifactId>heimdall-admin</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+    <modules>
+        <module>admin-server</module>
+    </modules>
+    <name>${project.artifactId}</name>
+    <!--    licenses信息-->
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+    <!--    开发者信息-->
+    <developers>
+        <developer>
+            <id>luterc</id>
+            <name>luterc</name>
+            <email>cluter@qq.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+    <!--    全局属性和版本定义-->
+    <properties>
+        <!--        发布目录-->
+        <dest.path>/opt/luter/develop/jiaoshoujia/heimdall-admin/dest/</dest.path>
+        <!--编译环境-->
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <!--跳过测试-->
+        <maven.test.skip>true</maven.test.skip>
+        <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+        <maven-war-plugin.version>3.2.3</maven-war-plugin.version>
+        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <proguard-maven-plugin.version>2.2.0</proguard-maven-plugin.version>
+        <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
+        <maven-pmd-plugin.version>3.13.0</maven-pmd-plugin.version>
+        <docker-maven-plugin.version>1.2.0</docker-maven-plugin.version>
+        <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
+        <p3c-pmd.version>2.0.1</p3c-pmd.version>
+        <spring-boot-maven-plugin.version>2.4.2</spring-boot-maven-plugin.version>
+        <mapstruct.version>1.4.1.Final</mapstruct.version>
+        <heimdall.version>1.0.4</heimdall.version>
+        <heimdall-starters.version>1.0.0</heimdall-starters.version>
+    </properties>
+    <!-- 全局依赖定义 -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.luterc</groupId>
+                <artifactId>heimdall-dependencies</artifactId>
+                <version>${heimdall-starters.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.luterc</groupId>
+                <artifactId>heimdall-starter-model</artifactId>
+                <version>${heimdall-starters.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.luterc</groupId>
+                <artifactId>heimdall-starter-utils</artifactId>
+                <version>${heimdall-starters.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.luterc</groupId>
+                <artifactId>heimdall-starter-boot</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.luterc</groupId>
+                <artifactId>heimdall-starter-redis</artifactId>
+                <version>${heimdall-starters.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.luterc</groupId>
+                <artifactId>heimdall-starter-captcha</artifactId>
+                <version>${heimdall-starters.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.luterc</groupId>
+                <artifactId>heimdall-starter-jpa</artifactId>
+                <version>${heimdall-starters.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.luterc</groupId>
+                <artifactId>heimdall-starter-syslog</artifactId>
+                <version>${heimdall-starters.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.luterc</groupId>
+                <artifactId>heimdall-starter-xss</artifactId>
+                <version>${heimdall-starters.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.luterc</groupId>
+                <artifactId>heimdall-starter-spring-boot</artifactId>
+                <version>${heimdall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.luterc</groupId>
+                <artifactId>heimdall-cache-caffeine</artifactId>
+                <version>${heimdall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.luterc</groupId>
+                <artifactId>heimdall-starter-data-redis</artifactId>
+                <version>${heimdall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <!--    maven库-->
+    <repositories>
+        <repository>
+            <id>aliyun</id>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/libs-milestone</url>
+        </repository>
+        <repository>
+            <id>oss-public</id>
+            <url>https://oss.sonatype.org/content/repositories/public</url>
+        </repository>
+
+    </repositories>
+    <!--    打包配置-->
+    <build>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <!--        build插件公共配置-->
+        <pluginManagement>
+            <plugins>
+                <!-- ///////////// 普通fat jar 打包-->
+                <!--  编译-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </plugin>
+                <!--maven jar打包插件-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.version}</version>
+                    <configuration>
+                        <!--不要把maven自己也打进去META-INF下面-->
+                        <archive>
+                            <addMavenDescriptor>false</addMavenDescriptor>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <!--maven war打包-->
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven-war-plugin.version}</version>
+                    <configuration>
+                        <!--                        没有web.xml的时候是否报错-->
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                        <!--                        打好的war包放在哪里-->
+                        <outputDirectory>distributions/modules/${project.artifactId}/</outputDirectory>
+                        <!--                        war包名字是什么-->
+                        <warName>ROOT</warName>
+                    </configuration>
+                </plugin>
+                <!-- spring boot 打包-->
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <!-- 排除 lombok-->
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
+                        <!--可直接执行的jar包,jar包无法通过解压缩工具进行解压-->
+                        <executable>false</executable>
+                        <!-- 包含本地Lib-->
+                        <includeSystemScope>true</includeSystemScope>
+                        <!-- spring boot2.3以后支持分层 jar 包,用作增量docker打包，如果没docker那意义不大-->
+                        <layers>
+                            <enabled>true</enabled>
+                        </layers>
+                    </configuration>
+                </plugin>
+                <!-- resources资源插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                    <configuration>
+                        <delimiters>
+                            <delimiter>@</delimiter>
+                        </delimiters>
+                        <useDefaultDelimiters>true</useDefaultDelimiters>
+                        <encoding>UTF-8</encoding>
+                        <!-- 不处理这类资源，多媒体、字体等内容可以通过这里进行排除 -->
+                        <nonFilteredFileExtensions>
+                            <nonFilteredFileExtension>woff</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>eot</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>svg</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>pem</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>jks</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>pfx</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>p12</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>key</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>db</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>dat</nonFilteredFileExtension>
+                        </nonFilteredFileExtensions>
+                    </configuration>
+                </plugin>
+                <!-- java文档插件 -->
+                <!--配置生成Javadoc包-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                        <charset>UTF-8</charset>
+                        <docencoding>UTF-8</docencoding>
+                        <show>package</show>
+                        <!-- 禁用java 8 的DocLint新特性，以确保当javadoc有编译错误时，也能正常生成javadoc jar包-->
+                        <doclint>none</doclint>
+                    </configuration>
+                    <executions>
+                        <!--                        保留注释-->
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                            <configuration>
+                                <additionalJOption>-Xdoclint:none</additionalJOption>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!--配置生成源码包-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven-source-plugin.version}</version>
+                    <configuration>
+                        <attach>true</attach>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- 一键更新子模块版本号 -->
+                <!--   修改：mvn versions:set -DnewVersion=1.0.0-RELEASE-->
+                <!--   回退：mvn versions:revert-->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${versions-maven-plugin.version}</version>
+                    <configuration>
+                        <generateBackupPoms>false</generateBackupPoms>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <!--默认所有模块都加载的插件-->
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+    <!--    环境配置-->
+    <profiles>
+        <!-- 开发环境 -->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profileActive>dev</profileActive>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <!-- 生产环境-->
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profileActive>prod</profileActive>
+            </properties>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+</project>

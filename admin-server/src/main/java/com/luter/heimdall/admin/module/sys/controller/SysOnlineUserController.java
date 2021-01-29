@@ -2,11 +2,9 @@ package com.luter.heimdall.admin.module.sys.controller;
 
 
 import com.luter.heimdall.admin.module.sys.service.SysOnlineUserService;
-import com.luter.heimdall.core.session.Page;
 import com.luter.heimdall.core.session.SimpleSession;
 import com.luter.heimdall.starter.jpa.base.controller.BaseJpaController;
 import com.luter.heimdall.starter.model.base.ResponseVO;
-import com.luter.heimdall.starter.model.pagination.PagerVO;
 import com.luter.heimdall.starter.syslog.annotation.SysLog;
 import com.luter.heimdall.starter.utils.response.ResponseUtils;
 import io.swagger.annotations.Api;
@@ -15,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 
 @Slf4j
@@ -30,8 +30,8 @@ public class SysOnlineUserController extends BaseJpaController {
     @GetMapping("/list")
     @ApiOperation(value = "获取在线用户列表", notes = "获取在线用户列表", response = ResponseVO.class)
     @SysLog
-    public ResponseEntity<ResponseVO<Page<SimpleSession>>> list(PagerVO page) {
-        return ResponseUtils.ok(sysOnlineUserService.getOnlineUser(page));
+    public ResponseEntity<ResponseVO<Collection<SimpleSession>>> list() {
+        return ResponseUtils.ok(sysOnlineUserService.getOnlineUser());
     }
 
     @PostMapping("/kick")

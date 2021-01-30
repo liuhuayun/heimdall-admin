@@ -77,16 +77,6 @@
             <artifactId>heimdall-cache-caffeine</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.luterc</groupId>
-            <artifactId>heimdall-starter-redis</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jsr305</artifactId>
-                    <groupId>com.google.code.findbugs</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
         </dependency>

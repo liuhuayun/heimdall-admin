@@ -81,8 +81,8 @@
         <p3c-pmd.version>2.0.1</p3c-pmd.version>
         <spring-boot-maven-plugin.version>2.4.2</spring-boot-maven-plugin.version>
         <mapstruct.version>1.4.1.Final</mapstruct.version>
-        <heimdall.version>1.0.4</heimdall.version>
-        <heimdall-starters.version>1.0.0</heimdall-starters.version>
+        <heimdall.version>1.0.5</heimdall.version>
+        <heimdall-starters.version>1.0.1</heimdall-starters.version>
     </properties>
     <!-- 全局依赖定义 -->
     <dependencyManagement>
@@ -158,6 +158,11 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.luterc</groupId>
+                <artifactId>heimdall-starter-oss</artifactId>
+                <version>1.0.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

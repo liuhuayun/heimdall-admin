@@ -28,10 +28,14 @@ import com.luter.heimdall.admin.module.sys.service.SysOnlineUserService;
 import com.luter.heimdall.core.manager.AuthenticationManager;
 import com.luter.heimdall.core.session.Page;
 import com.luter.heimdall.core.session.SimpleSession;
+import com.luter.heimdall.starter.model.pagination.PageDTO;
 import com.luter.heimdall.starter.model.pagination.PagerVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -41,8 +45,10 @@ public class SysOnlineUserServiceImpl extends BaseServiceImpl implements SysOnli
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public Page<SimpleSession> getOnlineUser(PagerVO page) {
-        return authenticationManager.getActiveSessions(page.getPage(), page.getSize());
+    public PageDTO<SimpleSession> getOnlineUser(PagerVO page) {
+        final Page<SimpleSession> activeSessions = authenticationManager.getActiveSessions(page.getPage(), page.getSize());
+        final List<SimpleSession> collect = activeSessions.getRecords().stream().filter(d -> null != d.getDetails()).collect(Collectors.toList());
+        return new PageDTO<>(page.getPage(), page.getSize(), activeSessions.getTotalCount(), collect);
     }
 
     @Override

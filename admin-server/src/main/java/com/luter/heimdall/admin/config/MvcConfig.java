@@ -22,13 +22,16 @@
 
 package com.luter.heimdall.admin.config;
 
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.luter.heimdall.admin.interceptors.CurrentUserInterceptor;
 import com.luter.heimdall.boot.starter.interceptor.PermBasedAuthorizeInterceptor;
 import com.luter.heimdall.boot.starter.resolver.CurrentUserRequestArgumentResolver;
 import com.luter.heimdall.core.manager.AuthenticationManager;
 import com.luter.heimdall.core.manager.AuthorizationManager;
 import com.luter.heimdall.starter.boot.config.DefaultWebMvcConfig;
+import com.luter.heimdall.starter.oss.config.OSSConfig;
 import com.luter.heimdall.starter.utils.json.JacksonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +41,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import java.util.List;
 
@@ -47,6 +51,7 @@ import java.util.List;
 public class MvcConfig extends DefaultWebMvcConfig {
     private final AuthorizationManager authorizationManager;
     private final AuthenticationManager authenticationManager;
+    private final OSSConfig config;
 
     @Bean
     @Primary
@@ -72,21 +77,26 @@ public class MvcConfig extends DefaultWebMvcConfig {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        //注入用户detail信息
         log.warn("注入header User信息拦截器");
         argumentResolvers.add(new CurrentUserRequestArgumentResolver(authenticationManager));
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //拦截处理操作的匹配路径
-        //放开静态拦截
+
         log.warn("初始化 Url 权限拦截器");
         registry.addInterceptor(new PermBasedAuthorizeInterceptor(authorizationManager))
-                //拦截所有路径
                 .addPathPatterns("/**")
-                //排除路径
-                //排除静态资源拦截
+                .excludePathPatterns(
+                        "/login/**",
+                        "/logout/**",
+                        "/current/**",
+                        "/static/**",
+                        "/resources/**",
+                        "/webjars/**",
+                        "/error/**");
+        registry.addWebRequestInterceptor(new CurrentUserInterceptor(authenticationManager))
+                .addPathPatterns("/**")
                 .excludePathPatterns(
                         "/login/**",
                         "/logout/**",
@@ -97,4 +107,18 @@ public class MvcConfig extends DefaultWebMvcConfig {
                         "/error/**");
 
     }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        if (StrUtil.isBlank(config.getLocal().getUrlPrefix()) || StrUtil.isBlank(config.getLocal().getSavePath())) {
+            throw new RuntimeException("文件上传参数配置错误,url-prefix或者path错误，上传功能将会不可用");
+        }
+        String savePath = config.getLocal().getSavePath().endsWith("/")
+                ? config.getLocal().getSavePath() : config.getLocal().getSavePath() + "/";
+        String urlPrefix = config.getLocal().getUrlPrefix().startsWith("/")
+                ? config.getLocal().getUrlPrefix() : config.getLocal().getUrlPrefix();
+        log.debug("初始化本地资源映射,url:{},location:{}", urlPrefix + "/**", savePath);
+        registry.addResourceHandler(urlPrefix + "/**").addResourceLocations("file:" + savePath);
+    }
+
 }

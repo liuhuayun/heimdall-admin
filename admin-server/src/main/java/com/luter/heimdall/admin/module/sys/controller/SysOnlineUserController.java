@@ -28,6 +28,7 @@ import com.luter.heimdall.core.session.Page;
 import com.luter.heimdall.core.session.SimpleSession;
 import com.luter.heimdall.starter.jpa.base.controller.BaseJpaController;
 import com.luter.heimdall.starter.model.base.ResponseVO;
+import com.luter.heimdall.starter.model.pagination.PageDTO;
 import com.luter.heimdall.starter.model.pagination.PagerVO;
 import com.luter.heimdall.starter.syslog.annotation.SysLog;
 import com.luter.heimdall.starter.utils.response.ResponseUtils;
@@ -52,7 +53,7 @@ public class SysOnlineUserController extends BaseJpaController {
     @GetMapping("/list")
     @ApiOperation(value = "获取在线用户列表", notes = "获取在线用户列表", response = ResponseVO.class)
     @SysLog
-    public ResponseEntity<ResponseVO<Page<SimpleSession>>> list(PagerVO page) {
+    public ResponseEntity<ResponseVO<PageDTO<SimpleSession>>> list(PagerVO page) {
         return ResponseUtils.ok(sysOnlineUserService.getOnlineUser(page));
     }
 

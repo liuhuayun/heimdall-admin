@@ -35,6 +35,7 @@ import com.luter.heimdall.starter.model.pagination.PageDTO;
 import com.luter.heimdall.starter.model.pagination.PagerVO;
 import com.luter.heimdall.starter.syslog.annotation.SysLog;
 import com.luter.heimdall.starter.syslog.enums.BizType;
+import com.luter.heimdall.starter.utils.context.BaseContextHolder;
 import com.luter.heimdall.starter.utils.response.ResponseUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -123,6 +124,8 @@ public class SysUserController extends BaseJpaController {
     @ApiOperation(value = "获取当前登录用户", notes = "获取当前登录用户")
     @SysLog
     public ResponseEntity<ResponseVO<SysUserDTOTransfer>> getCurrentUserInfo() {
+        log.error("当前用户 ID:{}", BaseContextHolder.getUserId(-1L));
+        log.error("当前用户Json {}", BaseContextHolder.getUser());
         final SysUserDTO currentUserFromDb = sysUserService.getCurrentUserDTO(true, true);
         SysUserDTOTransfer user = new SysUserDTOTransfer();
         BeanUtils.copyProperties(currentUserFromDb, user);

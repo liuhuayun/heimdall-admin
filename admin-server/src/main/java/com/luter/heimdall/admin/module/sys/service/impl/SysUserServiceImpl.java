@@ -46,6 +46,7 @@ import com.luter.heimdall.starter.captcha.config.CaptchaConfig;
 import com.luter.heimdall.starter.captcha.service.CaptchaService;
 import com.luter.heimdall.starter.model.pagination.PageDTO;
 import com.luter.heimdall.starter.model.pagination.PagerVO;
+import com.luter.heimdall.starter.utils.context.BaseContextHolder;
 import com.luter.heimdall.starter.utils.exception.LuterIllegalParameterException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -184,14 +185,17 @@ public class SysUserServiceImpl extends BaseServiceImpl implements SysUserServic
             throw new HeimdallException("用户名密码错误");
         }
         final SysUserDTO userDTO = mapper.toDto(sysUserEntityByUsername);
+        userDTO.setRoles(null);
         AppUserDetails userDetails = new AppUserDetails(userDTO);
         final SimpleSession session = authenticationManager.login(userDetails);
         retryLimit.remove(sysUserEntityByUsername.getUsername());
+        BaseContextHolder.setUserId(userDTO.getId());
         return session.getId();
     }
 
     @Override
     public void logout() {
         authenticationManager.logout();
+        BaseContextHolder.setUserId(null);
     }
 }

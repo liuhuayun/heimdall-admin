@@ -29,9 +29,11 @@
     <groupId>com.github.luterc</groupId>
     <artifactId>heimdall-admin</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <modules>
         <module>admin-server</module>
+        <module>code-generator</module>
+        <module>jpa-admin</module>
     </modules>
     <name>${project.artifactId}</name>
     <!--    licenses信息-->
@@ -83,6 +85,7 @@
         <mapstruct.version>1.4.1.Final</mapstruct.version>
         <heimdall.version>1.0.5</heimdall.version>
         <heimdall-starters.version>1.0.1</heimdall-starters.version>
+        <mysql.version>8.0.22</mysql.version>
     </properties>
     <!-- 全局依赖定义 -->
     <dependencyManagement>
@@ -93,6 +96,11 @@
                 <version>${heimdall-starters.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.luterc</groupId>
@@ -162,6 +170,11 @@
             <dependency>
                 <groupId>com.github.luterc</groupId>
                 <artifactId>heimdall-starter-oss</artifactId>
+                <version>1.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.luterc</groupId>
+                <artifactId>heimdall-starter-mybatis</artifactId>
                 <version>1.0.1</version>
             </dependency>
         </dependencies>

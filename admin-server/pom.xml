@@ -27,13 +27,13 @@
     <parent>
         <artifactId>heimdall-admin</artifactId>
         <groupId>com.github.luterc</groupId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>admin-server</artifactId>
 
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <description>Heimdall 权限管理系统</description>
     <dependencies>
@@ -52,7 +52,6 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.22</version>
         </dependency>
         <dependency>
             <groupId>com.github.luterc</groupId>

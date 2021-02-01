@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /*
+  ~  *
+  ~  *
+  ~  *      Copyright 2020-2021 Luter.me
+  ~  *
+  ~  *      Licensed under the Apache License, Version 2.0 (the "License");
+  ~  *      you may not use this file except in compliance with the License.
+  ~  *      You may obtain a copy of the License at
+  ~  *
+  ~  *        http://www.apache.org/licenses/LICENSE-2.0
+  ~  *
+  ~  *      Unless required by applicable law or agreed to in writing, software
+  ~  *      distributed under the License is distributed on an "AS IS" BASIS,
+  ~  *      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  *      See the License for the specific language governing permissions and
+  ~  *      limitations under the License.
+  ~  *
+  ~  *
+  ~  */
+  -->
+
+<Configuration status="OFF" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_HOME" value="./log"/>
+        <Property name="LOG_ARCHIVE" value="./log/archive"/>
+        <Property name="LOG_MODULE_NAME" value="@project.artifactId@"/>
+        <Property name="LOG_MAX_SIZE" value="100 MB"/>
+        <Property name="LOG_DAYS" value="15"/>
+        <Property name="LOG_PATTERN" value="%d [%t] %-5level %logger{36}.%M(%L) : %msg%n"/>
+        <Property name="TRACE_LOG_PATTERN"
+                  value="[%d] [%t]  [%-5level] %c{36}.%M()-%L : %msg%n"/>
+        <property name="TRACE_COLOR_LOG_PATTERN"
+                  value="%blue{%d} | %green{[%t]} | [%highlight{%p}] %logger{36}.%M(%L) : %msg%n"/>
+        <Property name="TIME_BASED_INTERVAL" value="1"/>
+    </Properties>
+
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT" follow="true">
+            <PatternLayout disableAnsi="false" pattern="${TRACE_COLOR_LOG_PATTERN}"/>
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="INFO" includeLocation="true" additivity="false">
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

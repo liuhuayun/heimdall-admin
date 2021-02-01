@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /*
+  ~  *
+  ~  *
+  ~  *      Copyright 2020-2021 Luter.me
+  ~  *
+  ~  *      Licensed under the Apache License, Version 2.0 (the "License");
+  ~  *      you may not use this file except in compliance with the License.
+  ~  *      You may obtain a copy of the License at
+  ~  *
+  ~  *        http://www.apache.org/licenses/LICENSE-2.0
+  ~  *
+  ~  *      Unless required by applicable law or agreed to in writing, software
+  ~  *      distributed under the License is distributed on an "AS IS" BASIS,
+  ~  *      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  *      See the License for the specific language governing permissions and
+  ~  *      limitations under the License.
+  ~  *
+  ~  *
+  ~  */
+  -->
+
+<Configuration status="OFF" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_HOME" value="./log"/>
+        <Property name="LOG_ARCHIVE" value="./log/archive"/>
+        <Property name="LOG_MODULE_NAME" value="@project.artifactId@"/>
+        <Property name="LOG_MAX_SIZE" value="100 MB"/>
+        <Property name="LOG_DAYS" value="15"/>
+        <Property name="LOG_PATTERN" value="%d [%t] %-5level %logger{36}.%M(%L) : %msg%n"/>
+        <Property name="TRACE_LOG_PATTERN"
+                  value="%d [%t] %-5level %logger{36}.%M(%L) : %msg%n"/>
+        <Property name="TIME_BASED_INTERVAL" value="1"/>
+    </Properties>
+
+    <Appenders>
+        <RollingRandomAccessFile name="RollingRandomAccessFileInfo"
+                                 fileName="${LOG_HOME}/${LOG_MODULE_NAME}-infoLog.log"
+                                 filePattern="${LOG_ARCHIVE}/${LOG_MODULE_NAME}-infoLog-%d{yyyy-MM-dd}-%i.log.gz"
+                                 immediateFlush="false">
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout disableAnsi="false" pattern="${TRACE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="${TIME_BASED_INTERVAL}"/>
+                <SizeBasedTriggeringPolicy size="${LOG_MAX_SIZE}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${LOG_DAYS}"/>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="RollingRandomAccessFileError"
+                                 fileName="${LOG_HOME}/${LOG_MODULE_NAME}-errorLog.log"
+                                 filePattern="${LOG_ARCHIVE}/${LOG_MODULE_NAME}-errorLog-%d{yyyy-MM-dd}-%i.log.gz"
+                                 immediateFlush="false">
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout disableAnsi="false" pattern="${TRACE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="${TIME_BASED_INTERVAL}"/>
+                <SizeBasedTriggeringPolicy size="${LOG_MAX_SIZE}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${LOG_DAYS}"/>
+        </RollingRandomAccessFile>
+        <!--    改成自己的LogStash 服务地址-->
+        <Socket name="LogStash" host="1.1.1.1" port="5000" protocol="TCP">
+            <JsonLayout properties="true" compact="true" eventEol="true"/>
+        </Socket>
+    </Appenders>
+
+    <Loggers>
+        <root level="INFO" includeLocation="true" additivity="false">
+            <AppenderRef ref="LogStash"/>
+            <AppenderRef ref="RollingRandomAccessFileInfo"/>
+            <AppenderRef ref="RollingRandomAccessFileError"/>
+        </root>
+    </Loggers>
+
+</Configuration>
